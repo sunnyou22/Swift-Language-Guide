@@ -7,29 +7,29 @@
 
 import Foundation
 
-//// MARK: - Inspecting an Array
-//var students = ["Ben", "Ivt", "Jordell"]
-//print(students.capacity) // 3
-//
-//// MARK: - Accessing Elements
-//
-//// first, last
-//let numbers = [10, 20, 30, 40 ,50]
-//if let firstNumber = numbers.first, let lastNumber = numbers.last {
-//    print(firstNumber, lastNumber, separator: "🍰")
-//} // 10🍰50
-//
-//// subscript(Range<Int>) -> ArraySlice<Element>
-//let streets = ["Adams", "Bryant", "Channing", "Douglas", "Evarts"]
-//let streetSlice = streets[2..<streets.endIndex] // 인덱스를 적어주는 곳에 범위를 작성할 수 있음
-//print(streetSlice) // ["Channing", "Douglas", "Evarts"]
-//
-//let i = streetSlice.firstIndex(of: "Evarts")
-//print(i) // Optional(4)
-//print(streets[i!]) // Evarts
-//
-//// func randomElement() -> Self.Element?
-//print(streets.randomElement()!) // Channing
+// MARK: - Inspecting an Array
+var students = ["Ben", "Ivt", "Jordell"]
+print(students.capacity) // 3
+
+// MARK: - Accessing Elements
+
+// first, last
+let numbers = [10, 20, 30, 40 ,50]
+if let firstNumber = numbers.first, let lastNumber = numbers.last {
+    print(firstNumber, lastNumber, separator: "🍰")
+} // 10🍰50
+
+// subscript(Range<Int>) -> ArraySlice<Element>
+let streets = ["Adams", "Bryant", "Channing", "Douglas", "Evarts"]
+let streetSlice = streets[2..<streets.endIndex] // 인덱스를 적어주는 곳에 범위를 작성할 수 있음
+print(streetSlice) // ["Channing", "Douglas", "Evarts"]
+
+let i = streetSlice.firstIndex(of: "Evarts")
+print(i) // Optional(4)
+print(streets[i!]) // Evarts
+
+// func randomElement() -> Self.Element?
+print(streets.randomElement()!) // Channing
 
 //MARK: - Adding Elements
 
@@ -54,3 +54,16 @@ func addTenQuadratic() {
         values.append(n)
     }
 } // 이렇게 메모리 공간을 미리 만들어놓지 말고 차라리 append로 요소 추가하기
+
+// MARK: - Combining Arrays
+
+ static func + <Other>(lhs: Other, rhs: Self) -> Self where Other : Sequence, Self.Element == Other.Element
+let numbers = [7, 8, 9, 10]
+let moreNumbers = (1...6) + numbers
+print(moreNumbers) // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// static func += <Other>(lhs: inout Self, rhs: Other) where Other : Sequence, Self.Element == Other.Element
+// 시퀀스말고 배열을 추가해 됨
+var numbers = [7, 8, 9]
+numbers += 10...15
+print(numbers) // [7, 8, 9, 10, 11, 12, 13, 14, 15]
