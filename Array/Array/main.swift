@@ -30,3 +30,40 @@ print(streets[i!]) // Evarts
 
 // func randomElement() -> Self.Element?
 print(streets.randomElement()!) // Channing
+
+//MARK: - Adding Elements
+
+// insert(contentsOf:at:)
+// contentsOf에는 컬렉션만 들어올 수 있다
+var numbers = [1, 2, 3, 4, 5]
+numbers.insert(contentsOf: [6, 7, 8], at: 3)
+print(numbers) // [1, 2, 3, 6, 7, 8, 4, 5]
+
+// replaceSubrange(_:with:)
+numbers.replaceSubrange(1...3, with: repeatElement(0, count: 3))
+print(numbers) // [1, 0, 0, 0, 7, 8, 4, 5]
+
+// reserveCapacity(_:)
+var values: [Int] = [0, 1, 2, 3]
+
+//Don't use 'reserveCapacity(_:)' like this
+func addTenQuadratic() {
+    let newCount = values.count + 10
+    values.reserveCapacity(newCount)
+    for n in values.count..<newCount {
+        values.append(n)
+    }
+} // 이렇게 메모리 공간을 미리 만들어놓지 말고 차라리 append로 요소 추가하기
+
+// MARK: - Combining Arrays
+
+ static func + <Other>(lhs: Other, rhs: Self) -> Self where Other : Sequence, Self.Element == Other.Element
+let numbers = [7, 8, 9, 10]
+let moreNumbers = (1...6) + numbers
+print(moreNumbers) // [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+
+// static func += <Other>(lhs: inout Self, rhs: Other) where Other : Sequence, Self.Element == Other.Element
+// 시퀀스말고 배열을 추가해 됨
+var numbers = [7, 8, 9]
+numbers += 10...15
+print(numbers) // [7, 8, 9, 10, 11, 12, 13, 14, 15]
