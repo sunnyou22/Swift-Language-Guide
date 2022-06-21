@@ -92,3 +92,54 @@ print(phrase) // I lve u
 // popLast() -> 배열의 마지막 요소가 있는지 없는지 알고싶을 때
 print(bugs.popLast()) // -> Optional("Earwig") 제거되는 요소를 반환하는 것
 bugs.removeLast() // Earwig 제거되는 요소를 반환하는 것
+
+//MARK: - Finding Elements
+
+// func contains(where: (Self.Element) throws -> Bool) rethrows -> Bool
+enum HTTPResponse {
+    case ok
+    case error(Int)
+}
+
+let lastThreeResponse: [HTTPResponse] = [.ok, .ok, .error(404)]
+let hadError = lastThreeResponse.contains { element in
+    if case .error = element {
+        return true
+    } else {
+        return false
+    }
+}
+
+print(hadError) // true
+
+// func allSatisfy((Self.Element) throws -> Bool) rethrows -> Bool
+let names = ["Sofia", "Camila", "Martina", "Mateo", "Nicolas"]
+let allHaveAtLeastFive = names.allSatisfy({ $0.count >= 5 })
+print(allHaveAtLeastFive) // true
+
+// first(where:)
+let numbers = [3, 7, 4, -2, 9, -6, 10, 1]
+if let firstNegative = numbers.first(where: { $0 < 0 }) {
+    print("The first negtive number is \(firstNegative).") // The first negtive number is -2.
+}
+
+// func firstIndex(where predicate: (Self.Element) throws -> Bool) rethrows -> Self.Index?
+let students = ["Kofi", "Abena", "Peter", "Kweku", "Akosua"]
+if let i = students.firstIndex(where: { $0.hasPrefix("A") }) {
+    print("\(students[i]) stars with 'A'~~")
+} // Abena stars with 'A'~~
+// last, lastIndex는 조건에 만족되는 것 중 가장 마지막순서인 것
+
+// func min() -> Self.Element
+
+let height = [67.5, 65.7, 64.3, 61.1, 58.5]
+let lowestHeight = height.min()
+print(lowestHeight) // Optional(58.5)
+
+// min(by:)
+// @warn_unqualified_access func min(by areInIncreasingOrder: (Self.Element, Self.Element) throws -> Bool) rethrows -> Self.Element?
+let hues = ["Heliotrope": 296, "Coral": 16, "Aquamarine": 156]
+let leastHue = hues.min { a, b in a.value < b.value }
+print(leastHue) // Optional((key: "Coral", value: 16))
+
+//max도 똑같이 해줌
