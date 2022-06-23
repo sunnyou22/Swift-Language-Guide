@@ -143,3 +143,40 @@ let leastHue = hues.min { a, b in a.value < b.value }
 print(leastHue) // Optional((key: "Coral", value: 16))
 
 //max도 똑같이 해줌
+
+//MARK: -Selecting Elements
+
+// func prefix(_ maxLength: Int) -> Self.SubSequence
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.prefix(2)) // [1, 2]
+print(numbers.prefix(10)) // [1, 2, 3, 4, 5]
+
+// func prefix(through position: Self.Index) -> Self.SubSequence
+
+if let i = numbers.firstIndex(of: 4) {
+    print(numbers.prefix(through: i))
+} // [1, 2, 3, 4]
+
+if let i = numbers.firstIndex(of: 3) {
+    print(numbers[...i])
+} // [1, 2, 3]
+
+// func prefix(upTo end: Self.Index) -> Self.SubSequence
+if let i = numbers.firstIndex(of: 3){
+    print(numbers.prefix(upTo: i))
+} // [1, 2]
+
+print(numbers.prefix(upTo: numbers.startIndex)) // []
+
+// func prefix(while predicate: (Self.Element) throws -> Bool) rethrows -> Self.SubSequence
+// 배열의 요소가 함수여야하나. 함수가 참이면 시퀀스를 반환?
+
+// func suffix(_ maxLength: Int) -> Self.SubSequence
+print(numbers.suffix(2)) // [4, 5]
+
+// func suffix(from start: Self.Index) -> Self.SubSequence
+if let i = numbers.firstIndex(of: 3) {
+    print(numbers.suffix(from: i)) // [3, 4, 5]
+}
+
+print(numbers.suffix(from: numbers.endIndex)) // []
