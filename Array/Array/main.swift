@@ -180,3 +180,16 @@ if let i = numbers.firstIndex(of: 3) {
 }
 
 print(numbers.suffix(from: numbers.endIndex)) // []
+
+//MARK: - Excluding Elements
+
+// func dropFirst(_ k: Int = 1) -> Self.SubSequence
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropFirst(2))
+// [3, 4, 5]
+print(numbers) // [1, 2, 3, 4, 5]
+print(numbers.dropFirst(10)) // []
+
+print(numbers.dropLast()) // [1, 2, 3, 4]
+print(numbers.dropLast(2)) // [1, 2, 3]
+print(numbers.dropLast(10)) // []
