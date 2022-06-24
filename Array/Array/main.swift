@@ -143,3 +143,251 @@ let leastHue = hues.min { a, b in a.value < b.value }
 print(leastHue) // Optional((key: "Coral", value: 16))
 
 //max도 똑같이 해줌
+
+//MARK: -Selecting Elements
+
+// func prefix(_ maxLength: Int) -> Self.SubSequence
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.prefix(2)) // [1, 2]
+print(numbers.prefix(10)) // [1, 2, 3, 4, 5]
+
+// func prefix(through position: Self.Index) -> Self.SubSequence
+
+if let i = numbers.firstIndex(of: 4) {
+    print(numbers.prefix(through: i))
+} // [1, 2, 3, 4]
+
+if let i = numbers.firstIndex(of: 3) {
+    print(numbers[...i])
+} // [1, 2, 3]
+
+// func prefix(upTo end: Self.Index) -> Self.SubSequence
+if let i = numbers.firstIndex(of: 3){
+    print(numbers.prefix(upTo: i))
+} // [1, 2]
+
+print(numbers.prefix(upTo: numbers.startIndex)) // []
+
+// func prefix(while predicate: (Self.Element) throws -> Bool) rethrows -> Self.SubSequence
+// 배열의 요소가 함수여야하나. 함수가 참이면 시퀀스를 반환?
+
+// func suffix(_ maxLength: Int) -> Self.SubSequence
+print(numbers.suffix(2)) // [4, 5]
+
+// func suffix(from start: Self.Index) -> Self.SubSequence
+if let i = numbers.firstIndex(of: 3) {
+    print(numbers.suffix(from: i)) // [3, 4, 5]
+}
+
+print(numbers.suffix(from: numbers.endIndex)) // []
+
+//MARK: - Excluding Elements
+
+// func dropFirst(_ k: Int = 1) -> Self.SubSequence
+let numbers = [1, 2, 3, 4, 5]
+print(numbers.dropFirst(2))
+// [3, 4, 5]
+print(numbers) // [1, 2, 3, 4, 5]
+print(numbers.dropFirst(10)) // []
+
+print(numbers.dropLast()) // [1, 2, 3, 4]
+print(numbers.dropLast(2)) // [1, 2, 3]
+print(numbers.dropLast(10)) // []
+
+//MARK: - Transforming an Array
+// 노션에 정리
+//MARK: - Iterating Over an Array’s Elements
+
+// func enumerated() -> EnumeratedSequence<Self>
+
+for (n, c) in "Swift".enumerated() {
+    print("\(n): '\(c)'")
+}
+/*
+ 0: 'S'
+ 1: 'w'
+ 2: 'i'
+ 3: 'f'
+ 4: 't'
+ */
+
+//MARK: - Reordering an Array’s Elements
+
+// mutating func sort()
+var students = ["Kofi", "Abena", "Peter", "Kweku", "Akosua"]
+var a = students.sort()
+print(a) // ()
+print(students) // ["Abena", "Akosua", "Kofi", "Kweku", "Peter"]
+
+students.sort(by: >)
+print(students) // ["Peter", "Kweku", "Kofi", "Akosua", "Abena"]
+
+// mutating func sort(by areInIncreasingOrder: (Self.Element, Self.Element) throws -> Bool) rethrows
+
+enum HTTPResponse {
+    case ok
+    case error(Int)
+}
+
+var responses: [HTTPResponse] = [.error(500), .ok, .ok, .error(404), .error(403)]
+var b = responses.sort {
+
+    switch ($0, $1) {
+    case let (.error(aCode), .error(bCode)):
+        return aCode < bCode
+
+    case (.ok, .ok): return false
+
+    case (.error, .ok): return true
+    case (.ok, .error): return false
+    }
+}
+
+print(responses)
+print(b) // ()
+
+// func sorted() -> [Self.Element]
+let sortedStudents = students.sorted()
+print(sortedStudents) // ["Abena", "Akosua", "Kofi", "Kweku", "Peter"]
+
+let descendingStudents = students.sorted(by: >)
+print(descendingStudents) // ["Peter", "Kweku", "Kofi", "Akosua", "Abena"]
+
+// func sorted(by areInIncreasingOrder: (Self.Element, Self.Element) throws -> Bool) rethrows -> [Self.Element]
+let Aresponses: [HTTPResponse] = [.error(500), .ok, .ok, .error(404), .error(403)]
+let sortedResponses = responses.sorted {
+    switch ($0, $1) {
+    case let (.error(ACode), .error(BCode)):
+        return ACode < BCode
+
+    case (.ok, .ok): return false
+    case (.error, .ok): return true
+    case(.ok, .error): return false
+    }
+}
+
+print(sortedResponses)
+
+// mutating func reverse()
+var characters: [Character] = ["C", "a", "f", "e"]
+var a = characters.reverse()
+print(a) // ()
+print(characters) // ["e", "f", "a", "C"]
+
+// func reversed() -> ReversedCollection<Self>
+let word = "BackWards"
+for char in word.reversed() {
+    print(char, terminator: "")
+} // 아예 reverse를 쓸수 없음 에러남, 어딘가에 담아서 사용해야하는 경우에는 그냥 reversed를 사용하자
+
+let reversedWord = String(word.reversed())
+print(reversedWord) // sdraWkcaB
+
+// mutating func shuffle()
+var name = "bangwoo"
+print(name.shuffled()) // ["o", "a", "n", "w", "o", "g", "b"]
+print(String(name.shuffled())) // oanbwog
+var b = name.shuffled()
+print(b) // ["g", "n", "o", "o", "b", "a", "w"]
+
+var numbers = 0...9
+var c = numbers.shuffled()
+print(c)
+
+var random = ["a", "b", "d", "e"]
+
+// mutating func shuffle<T>(using generator: inout T) where T : RandomNumberGenerator
+// 난수 생성기를 다르게 사용할 있음
+
+// func shuffled() -> [Self.Element]
+let numbers = 0...9
+let shuffledNumbers = numbers.shuffled()
+// shuffledNumbers == [1, 7, 6, 2, 8, 9, 4, 3, 5, 0]
+
+// mutating func partition(by belongsInSecondPartition: (Self.Element) throws -> Bool) rethrows -> Self.Index
+var numbers = [30, 40, 20, 30, 30, 60, 10]
+let p = numbers.partition(by: { $0 > 30 })
+print(numbers) // [30, 10, 20, 30, 30, 60, 40] 재정렬된 값으로 바뀜
+
+let first = numbers[..<p]
+print(first) // [30, 10, 20, 30, 30]
+let second = numbers[p...]
+print(second) // [60, 40]
+
+// mutating func swapAt(
+// _ i: Self.Index,
+// _ j: Self.Index
+// )
+
+numbers.swapAt(0, 1) // 이 자체를 프린트하면 빈 튜플만 나옴
+print(numbers) // [10, 30, 20, 30, 30, 60, 40]
+
+// MARK: - Splitting and Joining Elements
+
+/*
+ func split(
+     separator: Self.Element,
+     maxSplits: Int = Int.max,
+     omittingEmptySubsequences: Bool = true
+ ) -> [Self.SubSequence]
+*/
+
+let line = "BLANCHE:  I don't want realism. I want magic!"
+print(line.split(separator: " ")) // \["BLANCHE:", "I", "don\'t", "want", "realism.", "I", "want", "magic!"]
+
+print(line.split(separator: " ", maxSplits: 1)) // ["BLANCHE:", " I don\'t want realism. I want magic!"]
+var a = line.split(separator: " ", maxSplits: 1) // var a: [String.SubSequence]
+
+print(line.split(separator: " ", omittingEmptySubsequences: false))
+// ["BLANCHE:", "", "I", "don\'t", "want", "realism.", "I", "want", "magic!"]
+
+// split(maxSplits:omittingEmptySubsequences:whereSeparator:)
+
+print(line.split(whereSeparator: { $0 == " " }))
+// ["BLANCHE:", "I", "don\'t", "want", "realism.", "I", "want", "magic!"]
+print(line.split(maxSplits: 1, whereSeparator: { $0 == "w" }))
+// ["BLANCHE:  I don\'t ", "ant realism. I want magic!"]
+
+// func joined() -> FlattenSequence<Self>
+
+let ranges = [0..<3, 8..<10, 15..<17]
+
+for range in ranges {
+    print(range)
+}
+
+for index in ranges.joined() {
+    print(index)
+}
+/*
+ 0
+ 1
+ 2
+ 8
+ 9
+ 15
+ 16
+ */
+// 이들을 다 이어 붙여서 출력하고 싶으면 terminater을 사용해주면 됨
+
+print(ranges.joined())
+// FlattenSequence<Array<Range<Int>>>(_base: [Range(0..<3), Range(8..<10), Range(15..<17)])
+
+// func joined<Separator>(separator: Separator) -> JoinedSequence<Self> where Separator : Sequence, Separator.Element == Self.Element.Element
+let nestedNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+let joined = nestedNumbers.joined(separator: [-1, -2])
+print(Array(joined)) // [1, 2, 3, -1, -2, 4, 5, 6, -1, -2, 7, 8, 9] 위에 처럼 joined되는 동작 자체가 출력될 수 있으니 배열에 담는것임
+
+// func joined(separator: String = "") -> String
+let cast = ["Vivien", "Marlon", "Kim", "Karl"]
+let list = cast.joined(separator: ",")
+print(list) // Vivien,Marlon,Kim,Karl
+
+//MARK: - Creating and Applying Differences
+
+let alpha1 = ["a", "b", "c"]
+let alpha2 = ["d", "e", "f"]
+let diff = alpha1.difference(from: alpha2, by: <)
+for i in diff {
+    print(i)
+}
