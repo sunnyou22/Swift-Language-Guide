@@ -382,3 +382,12 @@ print(Array(joined)) // [1, 2, 3, -1, -2, 4, 5, 6, -1, -2, 7, 8, 9] 위에 처�
 let cast = ["Vivien", "Marlon", "Kim", "Karl"]
 let list = cast.joined(separator: ",")
 print(list) // Vivien,Marlon,Kim,Karl
+
+//MARK: - Creating and Applying Differences
+
+let alpha1 = ["a", "b", "c"]
+let alpha2 = ["d", "e", "f"]
+let diff = alpha1.difference(from: alpha2, by: <)
+for i in diff {
+    print(i)
+}
