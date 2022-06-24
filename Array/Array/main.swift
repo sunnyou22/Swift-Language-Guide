@@ -193,3 +193,131 @@ print(numbers.dropFirst(10)) // []
 print(numbers.dropLast()) // [1, 2, 3, 4]
 print(numbers.dropLast(2)) // [1, 2, 3]
 print(numbers.dropLast(10)) // []
+
+//MARK: - Transforming an Array
+// 노션에 정리
+//MARK: - Iterating Over an Array’s Elements
+
+// func enumerated() -> EnumeratedSequence<Self>
+
+for (n, c) in "Swift".enumerated() {
+    print("\(n): '\(c)'")
+}
+/*
+ 0: 'S'
+ 1: 'w'
+ 2: 'i'
+ 3: 'f'
+ 4: 't'
+ */
+
+//MARK: - Reordering an Array’s Elements
+
+// mutating func sort()
+var students = ["Kofi", "Abena", "Peter", "Kweku", "Akosua"]
+var a = students.sort()
+print(a) // ()
+print(students) // ["Abena", "Akosua", "Kofi", "Kweku", "Peter"]
+
+students.sort(by: >)
+print(students) // ["Peter", "Kweku", "Kofi", "Akosua", "Abena"]
+
+// mutating func sort(by areInIncreasingOrder: (Self.Element, Self.Element) throws -> Bool) rethrows
+
+enum HTTPResponse {
+    case ok
+    case error(Int)
+}
+
+var responses: [HTTPResponse] = [.error(500), .ok, .ok, .error(404), .error(403)]
+var b = responses.sort {
+
+    switch ($0, $1) {
+    case let (.error(aCode), .error(bCode)):
+        return aCode < bCode
+
+    case (.ok, .ok): return false
+
+    case (.error, .ok): return true
+    case (.ok, .error): return false
+    }
+}
+
+print(responses)
+print(b) // ()
+
+// func sorted() -> [Self.Element]
+let sortedStudents = students.sorted()
+print(sortedStudents) // ["Abena", "Akosua", "Kofi", "Kweku", "Peter"]
+
+let descendingStudents = students.sorted(by: >)
+print(descendingStudents) // ["Peter", "Kweku", "Kofi", "Akosua", "Abena"]
+
+// func sorted(by areInIncreasingOrder: (Self.Element, Self.Element) throws -> Bool) rethrows -> [Self.Element]
+let Aresponses: [HTTPResponse] = [.error(500), .ok, .ok, .error(404), .error(403)]
+let sortedResponses = responses.sorted {
+    switch ($0, $1) {
+    case let (.error(ACode), .error(BCode)):
+        return ACode < BCode
+
+    case (.ok, .ok): return false
+    case (.error, .ok): return true
+    case(.ok, .error): return false
+    }
+}
+
+print(sortedResponses)
+
+// mutating func reverse()
+var characters: [Character] = ["C", "a", "f", "e"]
+var a = characters.reverse()
+print(a) // ()
+print(characters) // ["e", "f", "a", "C"]
+
+// func reversed() -> ReversedCollection<Self>
+let word = "BackWards"
+for char in word.reversed() {
+    print(char, terminator: "")
+} // 아예 reverse를 쓸수 없음 에러남, 어딘가에 담아서 사용해야하는 경우에는 그냥 reversed를 사용하자
+
+let reversedWord = String(word.reversed())
+print(reversedWord) // sdraWkcaB
+
+// mutating func shuffle()
+var name = "bangwoo"
+print(name.shuffled()) // ["o", "a", "n", "w", "o", "g", "b"]
+print(String(name.shuffled())) // oanbwog
+var b = name.shuffled()
+print(b) // ["g", "n", "o", "o", "b", "a", "w"]
+
+var numbers = 0...9
+var c = numbers.shuffled()
+print(c)
+
+var random = ["a", "b", "d", "e"]
+
+// mutating func shuffle<T>(using generator: inout T) where T : RandomNumberGenerator
+// 난수 생성기를 다르게 사용할 있음
+
+// func shuffled() -> [Self.Element]
+let numbers = 0...9
+let shuffledNumbers = numbers.shuffled()
+// shuffledNumbers == [1, 7, 6, 2, 8, 9, 4, 3, 5, 0]
+
+// mutating func partition(by belongsInSecondPartition: (Self.Element) throws -> Bool) rethrows -> Self.Index
+var numbers = [30, 40, 20, 30, 30, 60, 10]
+let p = numbers.partition(by: { $0 > 30 })
+print(numbers) // [30, 10, 20, 30, 30, 60, 40] 재정렬된 값으로 바뀜
+
+let first = numbers[..<p]
+print(first) // [30, 10, 20, 30, 30]
+let second = numbers[p...]
+print(second) // [60, 40]
+
+// mutating func swapAt(
+// _ i: Self.Index,
+// _ j: Self.Index
+// )
+
+numbers.swapAt(0, 1) // 이 자체를 프린트하면 빈 튜플만 나옴
+print(numbers) // [10, 30, 20, 30, 30, 60, 40]
