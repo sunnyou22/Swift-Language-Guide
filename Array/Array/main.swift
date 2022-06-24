@@ -321,3 +321,64 @@ print(second) // [60, 40]
 
 numbers.swapAt(0, 1) // 이 자체를 프린트하면 빈 튜플만 나옴
 print(numbers) // [10, 30, 20, 30, 30, 60, 40]
+
+// MARK: - Splitting and Joining Elements
+
+/*
+ func split(
+     separator: Self.Element,
+     maxSplits: Int = Int.max,
+     omittingEmptySubsequences: Bool = true
+ ) -> [Self.SubSequence]
+*/
+
+let line = "BLANCHE:  I don't want realism. I want magic!"
+print(line.split(separator: " ")) // \["BLANCHE:", "I", "don\'t", "want", "realism.", "I", "want", "magic!"]
+
+print(line.split(separator: " ", maxSplits: 1)) // ["BLANCHE:", " I don\'t want realism. I want magic!"]
+var a = line.split(separator: " ", maxSplits: 1) // var a: [String.SubSequence]
+
+print(line.split(separator: " ", omittingEmptySubsequences: false))
+// ["BLANCHE:", "", "I", "don\'t", "want", "realism.", "I", "want", "magic!"]
+
+// split(maxSplits:omittingEmptySubsequences:whereSeparator:)
+
+print(line.split(whereSeparator: { $0 == " " }))
+// ["BLANCHE:", "I", "don\'t", "want", "realism.", "I", "want", "magic!"]
+print(line.split(maxSplits: 1, whereSeparator: { $0 == "w" }))
+// ["BLANCHE:  I don\'t ", "ant realism. I want magic!"]
+
+// func joined() -> FlattenSequence<Self>
+
+let ranges = [0..<3, 8..<10, 15..<17]
+
+for range in ranges {
+    print(range)
+}
+
+for index in ranges.joined() {
+    print(index)
+}
+/*
+ 0
+ 1
+ 2
+ 8
+ 9
+ 15
+ 16
+ */
+// 이들을 다 이어 붙여서 출력하고 싶으면 terminater을 사용해주면 됨
+
+print(ranges.joined())
+// FlattenSequence<Array<Range<Int>>>(_base: [Range(0..<3), Range(8..<10), Range(15..<17)])
+
+// func joined<Separator>(separator: Separator) -> JoinedSequence<Self> where Separator : Sequence, Separator.Element == Self.Element.Element
+let nestedNumbers = [[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+let joined = nestedNumbers.joined(separator: [-1, -2])
+print(Array(joined)) // [1, 2, 3, -1, -2, 4, 5, 6, -1, -2, 7, 8, 9] 위에 처럼 joined되는 동작 자체가 출력될 수 있으니 배열에 담는것임
+
+// func joined(separator: String = "") -> String
+let cast = ["Vivien", "Marlon", "Kim", "Karl"]
+let list = cast.joined(separator: ",")
+print(list) // Vivien,Marlon,Kim,Karl
